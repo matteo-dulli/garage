@@ -25,21 +25,21 @@ function filterAndRenderPlates() {
 
 /* ── Select a plate → load full details ─────────────────── */
 async function selectPlate(plate) {
-    // Mark active in list immediately
-    document.querySelectorAll('.plate-item').forEach(li => li.classList.remove('active'));
-    event?.currentTarget?.classList.add('active');
+    // Mark active in list by plate id
+    document.querySelectorAll('.plate-item').forEach(li => {
+        const pidAttr = li.getAttribute('data-plate-id');
+        li.classList.toggle('active', pidAttr && parseInt(pidAttr, 10) === plate.id);
+    });
 
     try {
         const res = await apiCall('get_plate.php?id=' + plate.id);
         const full = res.data.plate;
         AppState.selectedPlate = full;
         renderDetails(full);
-        // Re-mark active after re-render
+        // Re-mark active after re-render using data attribute
         document.querySelectorAll('.plate-item').forEach(li => {
-            const onclick = li.getAttribute('onclick') || '';
-            if (onclick.includes('"id":' + full.id) || onclick.includes('"id": ' + full.id)) {
-                li.classList.add('active');
-            }
+            const pidAttr = li.getAttribute('data-plate-id');
+            li.classList.toggle('active', pidAttr && parseInt(pidAttr, 10) === full.id);
         });
     } catch (e) {
         showToast('Errore caricamento dettagli: ' + e.message, 'error');

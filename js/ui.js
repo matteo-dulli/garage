@@ -45,7 +45,7 @@ function updatePlatesList(plates) {
             ? '<span class="badge bg-success ms-1" style="font-size:.65rem">IN</span>'
             : '<span class="badge bg-secondary ms-1" style="font-size:.65rem">OUT</span>';
         const meta = p.last_entry ? formatDate(p.last_entry) : 'Nessun passaggio';
-        return `<li class="plate-item${isActive ? ' active' : ''}" onclick="selectPlate(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+        return `<li class="plate-item${isActive ? ' active' : ''}" data-plate-id="${p.id}" onclick="selectPlate(${JSON.stringify(p).replace(/"/g, '&quot;')})">
             <div class="flex-grow-1 overflow-hidden">
                 <div class="pn">${escapeHtml(p.plate_number)}${badge}</div>
                 <div class="meta">${escapeHtml(meta)}</div>

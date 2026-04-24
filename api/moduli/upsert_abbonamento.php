@@ -15,12 +15,23 @@ $existing = $db->fetchOne('SELECT id FROM abbonamenti WHERE plate_number = ?', [
 $fields = ['nome','indirizzo','citta','cap','prov','stato','pi','cf','codun','info',
            'inabb','finabb','attivo','prezzo','Apay','SpayE','SpayC','Dpay','tipo_abb'];
 
+// Explicit column-to-SQL name mapping to avoid dynamic interpolation
+$columnMap = [
+    'nome' => 'nome', 'indirizzo' => 'indirizzo', 'citta' => 'citta',
+    'cap' => 'cap', 'prov' => 'prov', 'stato' => 'stato', 'pi' => 'pi',
+    'cf' => 'cf', 'codun' => 'codun', 'info' => 'info',
+    'inabb' => 'inabb', 'finabb' => 'finabb', 'attivo' => 'attivo',
+    'prezzo' => 'prezzo', 'Apay' => 'Apay', 'SpayE' => 'SpayE',
+    'SpayC' => 'SpayC', 'Dpay' => 'Dpay', 'tipo_abb' => 'tipo_abb',
+];
+
 if ($existing) {
     $set    = [];
     $params = [];
     foreach ($fields as $f) {
-        if (array_key_exists($f, $body)) {
-            $set[]    = "`{$f}` = ?";
+        if (array_key_exists($f, $body) && isset($columnMap[$f])) {
+            $col      = $columnMap[$f];
+            $set[]    = "`{$col}` = ?";
             $params[] = $body[$f];
         }
     }
@@ -34,8 +45,9 @@ if ($existing) {
     $vals   = [$plateNumber];
     $marks  = ['?'];
     foreach ($fields as $f) {
-        if (array_key_exists($f, $body)) {
-            $cols[]  = "`{$f}`";
+        if (array_key_exists($f, $body) && isset($columnMap[$f])) {
+            $col     = $columnMap[$f];
+            $cols[]  = "`{$col}`";
             $vals[]  = $body[$f];
             $marks[] = '?';
         }

@@ -12,7 +12,17 @@ async function searchTicketCode(code) {
         if (plate) {
             selectPlate(plate);
         } else if (ticket.plate_id) {
-            selectPlate({ id: ticket.plate_id, plate_number: ticket.plate_number || '—' });
+            // Fetch full plate data rather than using a partial object
+            try {
+                const plateRes = await apiCall('get_plate.php?id=' + ticket.plate_id);
+                if (plateRes.data && plateRes.data.plate) {
+                    selectPlate(plateRes.data.plate);
+                } else {
+                    showToast('Ticket trovato ma targa non disponibile', 'info');
+                }
+            } catch (_) {
+                showToast('Ticket trovato ma targa non disponibile', 'info');
+            }
         } else {
             showToast('Ticket trovato ma senza targa associata', 'info');
         }
