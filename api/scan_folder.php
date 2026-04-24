@@ -9,7 +9,6 @@ $db      = Database::getInstance();
 $folder  = MONITORED_FOLDER;
 $found   = 0;
 $skipped = 0;
-$errors  = [];
 
 if (!is_dir($folder)) {
     jsonSuccess(['found' => 0, 'skipped' => 0, 'message' => 'Cartella non trovata: ' . $folder]);

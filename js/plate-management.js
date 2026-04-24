@@ -4,7 +4,6 @@
 async function loadPlates(silent = false) {
     if (!silent) AppState.loading = true;
     try {
-        const status = AppState.filterStatus !== 'all' ? '&status=' + AppState.filterStatus : '';
         const res = await apiCall('get_plates.php?status=' + (AppState.filterStatus || 'all'));
         AppState.plates = res.data.plates || [];
         updateStats(res.data.stats || {});
