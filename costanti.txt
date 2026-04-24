@@ -1,0 +1,26 @@
+# ABBONAMENTI
+Mensile
+Trimestrale
+Semestrale
+Annuale
+Bimestrale
+
+# AUTORIZZATI
+Dipendente
+Fornitore
+Cliente VIP
+Residente
+Disabile
+Servizio
+
+# DESCRIZIONI FASCE
+Tariffa Base
+Tariffa Notturna
+Tariffa Weekend
+Tariffa Festivo
+
+# PREZZI ORARISCALARE
+1.50
+2.00
+2.50
+3.00
